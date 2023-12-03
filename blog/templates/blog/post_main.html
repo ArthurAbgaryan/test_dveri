@@ -1,0 +1,16 @@
+{% extends 'templates_project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% for ps in post  %}
+<h1>Main page</h1>
+<div>
+    <p>This is post {{ps.title}} from {{ps.date_created}}</p>
+
+    {{ps.body}}
+
+</div>
+
+{% endfor %}
+{% endblock %}
