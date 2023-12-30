@@ -1,0 +1,11 @@
+{% load static %}
+
+<form method="POST" action="{% url 'like_ajax' %}">
+
+    {% if liked %}
+    <button id="like" type="submit"  value="{{page.id}}"> Like </button>
+    {% else %}
+        <button id="like" type="submit"  value="{{page.id}}"> No_Like </button>
+{% endif %}
+
+</form>

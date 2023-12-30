@@ -1,0 +1,24 @@
+{% extends 'templates_project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if saves %}
+<h1>Main page</h1>
+{% for save in saves  %}
+
+<div>
+    <p>This is post {{save.title}} from {{save.date_created}}</p>
+
+    {{save.body}}<br>
+    <a href="{% url 'post_detail' save.slug save.pk %}" >Detail</a><br>
+
+</div>
+
+{% endfor %}
+{% else %}
+
+У вас нет сохраненных постов
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'templates_project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<h1>Detail page</h1>
+{% if user.is_authenticated %}
+<h1>Create your post</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" > Publik </input>
+
+
+    {% endif %}
+
+</form>
+
+{% endblock %}

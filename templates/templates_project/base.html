@@ -1,14 +1,92 @@
+{% load static %}
+{% load blog_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
 {% include 'templates_project/navbar.html' %}
+<p>Последние статьи {% new_posts  %}</p>
+<h1>This is my blog , and i am published {% my_tag %} posts</h1>
+
 {% block content %}
 
 
 {% endblock %}
+
+<!-- SCRIPTS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script>
+
+             // COMMENT FORM
+
+         $(document).on('submit','.comment-form', function(event){
+           event.preventDefault();
+           console.log($(this).serialize());
+           $.ajax({
+             type: 'POST',
+             url: $(this).attr('action'),
+             data: $(this).serialize(),
+             dataType: 'json',
+             success: function(response){
+               $('.main-comment-section').html(response['form']);
+               console.log(response['form'])
+               $('textarea').val('');
+             },
+             error: function(rs, e){
+               console.log(rs.responseText);
+             },
+           });
+         });
+         // SAVE POSTS
+
+         $(document).on('click','#save',function(event){
+           event.preventDefault();
+           var pk = $(this).attr('value');
+           $.ajax({
+             type: 'POST',
+             url: '{% url "save_ajax" %}',
+             data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+             dataType: 'json',
+             success: function(response){
+               $('#save-section').html(response['form']);
+               console.log($('#save-section').html(response['form']));
+             },
+             error: function(rs, e){
+               console.log(rs.responseText);
+             },
+           });
+         });
+
+
+                  // LIKE POSTS
+
+         $(document).on('click','#like',function(event){
+           event.preventDefault();
+           var pk = $(this).attr('value');
+           $.ajax({
+             type: 'POST',
+             url: '{% url "like_ajax" %}',
+             data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+             dataType: 'json',
+             success: function(response){
+               $('#like-section').html(response['form']);
+               console.log($('#like-section').html(response['form']));
+             },
+             error: function(rs, e){
+               console.log(rs.responseText);
+             },
+           });
+         });
+
+
+
+</script>
 </body>
 </html>

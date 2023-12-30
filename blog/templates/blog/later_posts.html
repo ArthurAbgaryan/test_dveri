@@ -1,0 +1,5 @@
+<ul>
+    {% for newpost in new %}
+    <li><a href="{{newpost.get_absolute_url}}">{{newpost.title}}</a></li>
+    {% endfor %}
+</ul>

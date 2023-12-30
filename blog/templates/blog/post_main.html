@@ -3,12 +3,26 @@
 {% load static %}
 
 {% block content %}
-{% for ps in post  %}
-<h1>Main page</h1>
-<div>
-    <p>This is post {{ps.title}} from {{ps.date_created}}</p>
 
-    {{ps.body}}
+
+
+<h1>Main page</h1>
+{% for ps in post  %}
+    <h1>Tags:
+
+{% for tag in ps.tags.all %}
+{% if tag %}
+    <a href="{% url 'main_list_tag' tag.slug %}">{{tag.name}}</a>
+        {% else %}
+        <p>тегов нету</p>
+        {% endif %}
+    {% endfor %}
+</h1>
+<div>
+    <p> {{ps.title}} from {{ps.date_created}}</p>
+
+    {{ps.body}}<br>
+    <a href="{% url 'post_detail' ps.slug ps.pk %}" >Detail</a><br>
 
 </div>
 

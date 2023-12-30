@@ -1,0 +1,13 @@
+{% load static %}
+
+<form class="d-inline float-right" action="{% url 'save_ajax' %}" method="POST">
+    {% csrf_token %}
+
+    {% if user.is_authenticated %}
+      {% if saved %}
+        <button id="save" type="submit" name="post_sid" value="{{page.id}}" class="btn btnsave"><i  class="bi bi-bookmarks fs-3">уже сохранён</i></button>
+      {% else %}
+        <button id="save" type="submit" name="post_sid" value="{{page.id}}" class="btn btnsave"><i  class="bi bi-bookmarks fs-3">сохранить</i></button>
+      {% endif %}
+    {% endif %}
+  </form>

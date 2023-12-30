@@ -1,0 +1,36 @@
+{% extends 'templates_project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div>
+    <div id="save-section">
+    {% include 'blog/save_post_ajax.html' %}
+    </div>
+
+        <div id="like-section">
+    {% include 'blog/like_ajax.html' %}
+    </div>
+
+    <h1>{{ page.title }} by {{ page.author }}  {{ page.date_created }}</h1>
+
+
+    {{page.body}}<br>
+    <a href="{% url 'post_delete' page.pk %}">Delete post</a><br>
+    <a href="{% url 'post_update' page.pk  %}">Update post</a><br>
+
+    <div class="main-comment-section">
+    {% include 'blog/comment_form.html' %}
+    </div>
+    <div clas="recomenf">
+        <h2>Рекомендованные статьи </h2>
+        {% for recom in recomend %}
+        <p><a href="{% url 'post_detail' recom.slug recom.pk %}">{{recom.title}}</a> by {{recom.author}} </p><br>
+        {{recom.body}}
+
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

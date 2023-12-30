@@ -1,0 +1,19 @@
+{% extends 'templates_project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<h1>Detail page</h1>
+{% if user.is_authenticated %}
+
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" >Update </input>
+
+
+    {% endif %}
+
+</form>
+
+{% endblock %}
