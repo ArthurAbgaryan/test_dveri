@@ -1,5 +1,5 @@
 {% extends 'templates_project/base.html' %}
-
+{% load blog_tags %}
 {% load static %}
 
 {% block content %}
@@ -15,7 +15,7 @@
     <h1>{{ page.title }} by {{ page.author }}  {{ page.date_created }}</h1>
 
 
-    {{page.body}}<br>
+    {{page.body|markdown}}<br>
     <a href="{% url 'post_delete' page.pk %}">Delete post</a><br>
     <a href="{% url 'post_update' page.pk  %}">Update post</a><br>
 
@@ -26,7 +26,7 @@
         <h2>Рекомендованные статьи </h2>
         {% for recom in recomend %}
         <p><a href="{% url 'post_detail' recom.slug recom.pk %}">{{recom.title}}</a> by {{recom.author}} </p><br>
-        {{recom.body}}
+        {{recom.body|markdown}}
 
 
         {% endfor %}

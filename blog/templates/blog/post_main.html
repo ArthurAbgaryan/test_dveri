@@ -1,5 +1,5 @@
 {% extends 'templates_project/base.html' %}
-
+{% load blog_tags %}
 {% load static %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 <div>
     <p> {{ps.title}} from {{ps.date_created}}</p>
 
-    {{ps.body}}<br>
+    {{ps.body|markdown|truncatewords_html:20}}<br>
     <a href="{% url 'post_detail' ps.slug ps.pk %}" >Detail</a><br>
 
 </div>
