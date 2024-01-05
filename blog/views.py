@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Post,Comment
-from django.views.generic import DetailView, DeleteView,UpdateView,CreateView
+from django.views.generic import DetailView, DeleteView,UpdateView,CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.urls import reverse_lazy
-from .forms import PostForm,CommentForm
+from .forms import PostForm,CommentForm,Search
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib import messages
@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from taggit.models import Tag #имп-ли модель тегов
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector
 
 def main_list(request, tag_slug = None):
     post = Post.objects.order_by('-date_created')
@@ -84,7 +85,23 @@ def post_detail(request, pk, slug):
         return JsonResponse({'form':html})
     return render(request, 'blog/post_detail.html', context)
 
+def search_post(request):
+    context = {}
+    result = []
+    search = None
+    if request.method == 'GET':
+        form = Search(request.GET)
+        if form.is_valid():
+            search = form.cleaned_data['search']
+            result = Post.objects.annotate(s = SearchVector('title','body')).filter(s = search)
+    else:
+        form = Search()
 
+    context['form'] = form
+    context['result'] = result
+    context['search'] = search
+
+    return render (request, 'templates_project/base.html', context)
 class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
@@ -124,9 +141,11 @@ def create_post(request):
         if form.is_valid():
             t = request.POST.get('title')
             b = request.POST.get('body')
+            t1 = request.POST.get('tags')
             new_form = Post.objects.create(
                 title = t,
                 body = b,
+                tags = t1,
                 author = request.user
             )
 
@@ -140,6 +159,9 @@ def create_post(request):
     else:
         form = PostForm()
     return render(request, 'blog/post_form.html',{'form':form})
+
+
+
 
 @login_required
 def save_posts(request):

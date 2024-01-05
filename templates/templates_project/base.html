@@ -9,7 +9,28 @@
 </head>
 <body>
 
+
 {% include 'templates_project/navbar.html' %}
+<!--Форма поиска по сайту-->
+<div>
+{% if search %}
+
+{% for post in result %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.body }}</p>
+
+{% endfor %}
+
+{% else %}
+<form method="get" action="{% url 'search' %}">
+   <input type="search" type="text" name="search">
+    <button type="submit">найти</button>
+
+</form>
+    {% endif %}
+</div>
+<!--Коней формы поиска по сайту-->
+
 <p>Последние статьи {% new_posts  %}</p>
 <h1>This is my blog , and i am published {% my_tag %} posts</h1>
 

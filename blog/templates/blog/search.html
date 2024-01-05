@@ -1,0 +1,19 @@
+
+{% load static %}
+<div>
+{% if search %}
+
+{% for post in result %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.body }}</p>
+
+{% endfor %}
+
+{% else %}
+<form method="get" action=".">
+    {{form.as_p}}
+   <input type="submit" value="Search">
+
+</form>
+    {% endif %}
+</div>
